@@ -79,6 +79,7 @@ function faucetBalance() {
         body += chunk;
       });
       res.on('end', (res) => {
+        console.log(body);
         res = JSON.parse(body);
         balance = res["nem:xem"] / 1000000;
         resolve(balance);
@@ -86,7 +87,7 @@ function faucetBalance() {
     }).on('error', (e) => {
       console.log(e.message);
     });
-    req.setTimeout(500); //500ms応答がない場合はbotが停止しているとみなす
+    req.setTimeout(10000); //10000ms応答がない場合はbotが停止しているとみなす
 
     req.on('timeout', function () {
       console.log('request timed out');

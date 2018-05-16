@@ -23,5 +23,6 @@ Faucetとは蛇口を意味することばですが、暗号通貨の配布方�
 ## 参考
 [tipnem](https://namuyan.github.io/nem-tip-bot/index)
   
-## 免責事項
+## 注意
+  
 これらの仕様は開発中のものですが断りなく変更になる可能性があります。
