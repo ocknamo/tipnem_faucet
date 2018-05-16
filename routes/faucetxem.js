@@ -21,14 +21,14 @@ const faucetXem = function (userScreenName, faucetCount) {
       /**
        * faucetXemのユニットテストを行う場合は以下のclient.postをコメントアウトする
        */
-      client.post('statuses/update', { status: '@tipnem_test tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
         if (!error) {
           console.info('Faucet to' + userScreenName + ': 1xem');
-          resolve('@tipnem_test tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
+          resolve('@tipnem tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
         }
       });
 
-     resolve('@tipnem_test tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
+     resolve('@tipnem tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
     } else {
       /**
        * 配布割合
@@ -52,14 +52,14 @@ const faucetXem = function (userScreenName, faucetCount) {
       /**
        * faucetXemのユニットテストを行う場合は以下のclient.postをコメントアウトする
        */
-      client.post('statuses/update', { status: '@tipnem_test tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
         if (!error) {
           console.info('Faucet to' + userScreenName + ':' + faucetAmount + 'xem');
-          resolve('@tipnem_test tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
+          resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
         }
       });
 
-      resolve('@tipnem_test tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用      
+      resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用      
     }
   });
 };

@@ -68,7 +68,7 @@ stream.on('error', function (error) {
 function faucetBalance() {
   let balance = 0;
   let http = require('http');
-  const URL = 'http://tipnem.tk:5746/user/balance/tipfaucet_test';
+  const URL = 'http://tipnem.tk:5745/user/balance/tipnem_faucet';
 
   return new Promise((resolve, reject) => {
       var req = http.get(URL, (res) => {
