@@ -1,10 +1,11 @@
 'use strict';
 const Twitter = require('twitter');
+
 const client = new Twitter({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token_key: '',
-  access_token_secret: ''
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 /**
@@ -22,11 +23,11 @@ const faucetXem = function (userScreenName, faucetCount) {
        */
       client.post('statuses/update', { status: '@tipnem_test tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
         if (!error) {
-          console.info('Faucet to' + useId + '1xem');
+          console.info('Faucet to' + userScreenName + ': 1xem');
           resolve('@tipnem_test tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
         }
       });
-      
+
      resolve('@tipnem_test tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
     } else {
       /**
@@ -53,7 +54,7 @@ const faucetXem = function (userScreenName, faucetCount) {
        */
       client.post('statuses/update', { status: '@tipnem_test tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
         if (!error) {
-          console.info('Faucet to' + useId + '' + faucetAmount + 'xem');
+          console.info('Faucet to' + userScreenName + ':' + faucetAmount + 'xem');
           resolve('@tipnem_test tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
         }
       });

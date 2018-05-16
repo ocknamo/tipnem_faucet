@@ -2,10 +2,10 @@
 const Twitter = require('twitter');
 
 const client = new Twitter({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token_key: '',
-  access_token_secret: ''
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 const VerifyUser = require('./routes/verifyuser');
@@ -36,18 +36,20 @@ stream.on('data', function (event) {
 
     faucetBalance().then(balance => {
       if (balance < 1) {
-        client.post('statuses/update', { status: 'Sorry. Faucet is empty. 残念ですがfaucetの残高が足りません……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+        client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
           if (!error) {
             return false;
           }
         });
       } else {
-        VerifyUser(tweetJSON, requestAt).then(result => {
+        VerifyUser(event, requestAt).then(result => {
           if (!result) {
             return false;
           } else {
             faucetXem(result[0], result[1]);
           }
+        }).catch((error) => {
+          console.log(error);
         });
       }
     });
@@ -68,33 +70,29 @@ function faucetBalance() {
   let http = require('http');
   const URL = 'http://tipnem.tk:5746/user/balance/tipfaucet_test';
 
-  http.get(URL, (res) => {
-    let body = '';
-    res.setEncoding('utf8');
+  return new Promise((resolve, reject) => {
+      var req = http.get(URL, (res) => {
+      let body = '';
+      res.setEncoding('utf8');
 
-    res.on('data', (chunk) => {
-      body += chunk;
+      res.on('data', (chunk) => {
+        body += chunk;
+      });
+      res.on('end', (res) => {
+        res = JSON.parse(body);
+        balance = res["nem:xem"] / 1000000;
+        resolve(balance);
+      });
+    }).on('error', (e) => {
+      console.log(e.message); 
     });
+    req.setTimeout(500); //500ms応答がない場合はbotが停止しているとみなす
 
-    res.on('end', (res) => {
-      res = JSON.parse(body);
-      balance = res["nem:xem"] / 1000000;
-      return balance;
+    req.on('timeout', function () {
+      console.log('request timed out');
+      resolve(0); // botが停止しているときに 0 を返す
+      req.abort()
     });
-
-  }).on('error', (e) => {
-    console.log(e.message); //エラー時
   });
-}
+};
 
-/**
- * 日本語版
-var stream = client.stream('statuses/filter', {track: 'テストネット用のXEMください'});
-stream.on('data', function(event) {
-  console.log("eventId:" + event.id + " text:" + event.text + " username:" + event.user.name + " userId:" + event.user.id);
-});
-
-stream.on('error', function(error) {
-  throw error;
-});
- */

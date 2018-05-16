@@ -19,7 +19,7 @@ const OneDay = OneHour * 24;
 const VerifyUser = function (tweetJSON, requestAt) {
   let userId = tweetJSON.user.id_str;
   let userScreenName = tweetJSON.user.screen_name;
-
+  
   return new Promise((resolve, reject) => {
     User.findOne({
       where: {
@@ -29,6 +29,7 @@ const VerifyUser = function (tweetJSON, requestAt) {
 
       if (tweetJSON.user.friends_count < 50 || tweetJSON.user.statuses_count < 100) { // フォロワー数が50以上かつツイート数が100以上か
         resolve(false);
+        console.log('フォロワー数が50以下もしくはツイート数が100以下のため検証修了');
       } else if (pastRequest) {
         let pastRequestAt = pastRequest.lastRequest;
         let intervalTime = requestAt - pastRequestAt;
