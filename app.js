@@ -35,7 +35,7 @@ stream.on('data', function (event) {
     });
 
     faucetBalance().then(balance => {
-      if (balance < 1) {
+      if (balance <= 1) {
         client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
           if (!error) {
             return false;
