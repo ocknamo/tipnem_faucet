@@ -2,10 +2,10 @@
 const Twitter = require('twitter');
 
 const client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 const VerifyUser = require('./routes/verifyuser');
@@ -71,7 +71,7 @@ function faucetBalance() {
   const URL = 'http://tipnem.tk:5746/user/balance/tipfaucet_test';
 
   return new Promise((resolve, reject) => {
-      var req = http.get(URL, (res) => {
+    var req = http.get(URL, (res) => {
       let body = '';
       res.setEncoding('utf8');
 
@@ -84,7 +84,7 @@ function faucetBalance() {
         resolve(balance);
       });
     }).on('error', (e) => {
-      console.log(e.message); 
+      console.log(e.message);
     });
     req.setTimeout(500); //500ms応答がない場合はbotが停止しているとみなす
 
@@ -95,4 +95,3 @@ function faucetBalance() {
     });
   });
 };
-
