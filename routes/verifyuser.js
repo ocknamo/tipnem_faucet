@@ -38,6 +38,7 @@ const VerifyUser = function (tweetJSON, requestAt) {
           let returnData = [userScreenName, pastRequest.faucetCount];
           resolve(returnData);
         }
+        console.log('24時間以内にリクエストを行っていたため検証修了');
         resolve(false);
       } else if (!pastRequest) {
         userRegistration(tweetJSON, requestAt,0);

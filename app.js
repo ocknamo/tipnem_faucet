@@ -2,10 +2,10 @@
 const Twitter = require('twitter');
 
 const client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 const VerifyUser = require('./routes/verifyuser');
@@ -16,7 +16,7 @@ const faucetXem = require('./routes/faucetxem')
  * number of tweets per second depends on topic popularity
  **/
 
-var stream = client.stream('statuses/filter', { track: 'Please give me testnet NEM:XEM!' });
+var stream = client.stream('statuses/filter', { track: 'Please give me NEM:XEM!' });
 stream.on('data', function (event) {
   if (event) {
     let requestTweetId = event.id_str;
@@ -35,7 +35,7 @@ stream.on('data', function (event) {
     });
 
     faucetBalance().then(balance => {
-      if (balance <= 1) {
+      if (balance < 1) {
         client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
           if (!error) {
             return false;
@@ -71,7 +71,7 @@ function faucetBalance() {
   const URL = 'http://tipnem.tk:5745/user/balance/tipnem_faucet';
 
   return new Promise((resolve, reject) => {
-      var req = http.get(URL, (res) => {
+    var req = http.get(URL, (res) => {
       let body = '';
       res.setEncoding('utf8');
 
@@ -79,14 +79,15 @@ function faucetBalance() {
         body += chunk;
       });
       res.on('end', (res) => {
+        console.log(body);
         res = JSON.parse(body);
         balance = res["nem:xem"] / 1000000;
         resolve(balance);
       });
     }).on('error', (e) => {
-      console.log(e.message); 
+      console.log(e.message);
     });
-    req.setTimeout(500); //500ms応答がない場合はbotが停止しているとみなす
+    req.setTimeout(10000); //10000ms応答がない場合はbotが停止しているとみなす
 
     req.on('timeout', function () {
       console.log('request timed out');
