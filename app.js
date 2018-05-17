@@ -97,3 +97,22 @@ function faucetBalance() {
   });
 };
 
+
+/**
+ * 自分にtipが投げられた際に残高を確認し受取を確定する
+ * 参考： https://namuyan.github.io/nem-tip-bot/index
+ */
+var stream = client.stream('statuses/filter', { track: '@tipnem tip @tipnem_faucet' });
+stream.on('data', function(event) {
+  if (event) {
+    client.post('statuses/update', {status: '@tipnem balance'}, function(error, tweet, response) {
+      if (!error) {
+        console.log('tweet balance');
+      }
+    });
+  }
+});
+ 
+stream.on('error', function(error) {
+  throw error;
+});
