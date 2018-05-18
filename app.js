@@ -101,56 +101,26 @@ function faucetBalance() {
  * 自分にtipが投げられた際に残高を確認し受取を確定する
  * 参考： https://namuyan.github.io/nem-tip-bot/index
  */
-client.stream('statuses/filter', { track: '@tipnem tip @tipnem_faucet' }, function (stream) {
-  stream.on('data', function (tweet) {
-    if (tweet) {
-      client.post('statuses/update', { status: '@tipnem balance' + ' ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-        if (!error) {
-          console.log('tweet @tipnem balance');
-          faucetBalance().then(balance => {
-            if (balance) {
-              client.post('statuses/update', { status: 'Faucetの残高は: ' + balance + ' xem です。 ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-                if (!error) {
-                  console.log('tweet balance');
-                }
-              });
-            }
-          });
-        }
-      });
-    }
-  });
-
-  stream.on('error', function (error) {
-    console.log(error);
-  });
+var balanceStream = client.stream('statuses/filter', { track: '@tipnem tip @tipnem_faucet' });
+balanceStream.on('data', function (tweet) {
+  if (tweet) {
+    client.post('statuses/update', { status: '@tipnem balance' + ' ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+      if (!error) {
+        console.log('tweet @tipnem balance');
+        faucetBalance().then(balance => {
+          if (balance) {
+            client.post('statuses/update', { status: 'Faucetの残高は: ' + balance + ' xem です。 ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+              if (!error) {
+                console.log('tweet balance');
+              }
+            });
+          }
+        });
+      }
+    });
+  }
 });
 
-/**
- * 自分にtipが投げられた際に残高を確認し受取を確定する
- *   * 参考： https://namuyan.github.io/nem-tip-bot/index
- *    */
-client.stream('statuses/filter', { track: '@tipnem tip @tipnem_faucet' }, function (stream) {
-  stream.on('data', function (tweet) {
-    if (tweet) {
-      client.post('statuses/update', { status: '@tipnem balance' + ' ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-        if (!error) {
-          console.log('tweet @tipnem balance');
-          faucetBalance().then(balance => {
-            if (balance) {
-              client.post('statuses/update', { status: 'Faucetの残高は: ' + balance + ' xem です。 ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-                if (!error) {
-                  console.log('tweet balance');
-                }
-              });
-            }
-          });
-        }
-      });
-    }
-  });
-
-  stream.on('error', function (error) {
-    console.log(error);
-  });
+balanceStream.on('error', function (error) {
+  console.log(error);
 });
