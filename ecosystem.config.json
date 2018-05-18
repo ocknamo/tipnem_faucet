@@ -6,6 +6,7 @@
     "max_memory_restart"  :"200M",
     "log_date_format"  :"YYYY-MM-DD HH:mm Z",
     "out_file"  :"tipnem_faucet",
+    "min_uptime"  :"5m",
     "max_restarts"  :"10"
   }]
 }
