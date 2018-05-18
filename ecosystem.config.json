@@ -1,0 +1,11 @@
+{
+  "apps" : [{
+    "name"        : "tipnem_faucet",
+    "script"      : "./app.js",
+    "watch"       : true,
+    "max_memory_restart"  :"200M",
+    "log_date_format"  :"YYYY-MM-DD HH:mm Z",
+    "out_file"  :"tipnem_faucet",
+    "max_restarts"  :"10"
+  }]
+}
