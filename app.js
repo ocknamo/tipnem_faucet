@@ -30,7 +30,6 @@ stream.on('data', function (event) {
     
     if (new RegExp('@tipnem tip @tipnem_faucet').test(userText)) {
       // tipコマンドを検知した場合のみ残高を確定して処理を終了する。
-      // TODO 対象をフォローする
       ConfirmBalance();
     } else {
       faucetBalance().then(balance => {
@@ -80,23 +79,23 @@ function faucetBalance() {
         body += chunk;
       });
       res.on('end', (res) => {
-        /** 接続がエラーの場合tipnemのAPIから
+        /** 残高確認APIの接続がエラーの場合tipnemのAPIから
          * "not found user info"もしくは"not found select name or not allowed"が返ってくるため
          * 対応する処理を行う
         */
-        if (new RegExp('not found').test(body)){
+        if (new RegExp('not found').test(body)) {
           console.log("残高確認のリクエストが許可されているか確認してください:" + body);
-          return false;
+          resolve(0);
+        } else {
+          res = JSON.parse(body);
+          balance = res["nem:xem"] / 1000000;
+          resolve(balance);
         }
-        res = JSON.parse(body);
-        balance = res["nem:xem"] / 1000000;
-        resolve(balance);
       });
     }).on('error', (e) => {
       console.log(e.message);
     });
     req.setTimeout(10000); //10000ms応答がない場合はbotが停止しているとみなす
-
     req.on('timeout', function () {
       console.log('request timed out');
       resolve(0); // botが停止しているときに 0 を返す
