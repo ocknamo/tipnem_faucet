@@ -27,18 +27,10 @@ stream.on('data', function (event) {
     let requestAt = Date.now();
 
     console.info(userScreenName + userId + 'から' + requestAt + 'にリクエストを受け取りました。:' + userText)
-
-    // 対象のつぶやきにfavoritesをつける 
-    client.post('favorites/create', { id: requestTweetId }, function (error, tweet, response) {
-      if (!error) {
-        console.log("favorite to request tweet.");
-      }
-    });
-
-    // TODO 対象をフォローする
     
     if (new RegExp('@tipnem tip @tipnem_faucet').test(userText)) {
       // tipコマンドを検知した場合のみ残高を確定して処理を終了する。
+      // TODO 対象をフォローする
       ConfirmBalance();
     } else {
       faucetBalance().then(balance => {
