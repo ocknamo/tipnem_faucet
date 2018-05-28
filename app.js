@@ -14,9 +14,10 @@ const faucetXem = require('./routes/faucetxem')
 /**
  * Stream statuses filtered by keyword
  * number of tweets per second depends on topic popularity
+ * filter message: En message OR Ja message OR tip message
  **/
 
-var stream = client.stream('statuses/filter', { track: 'Please give me NEM:XEM!,NEM:XEMちょっとください' });
+var stream = client.stream('statuses/filter', { track: 'Please give me NEM:XEM!,NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
 stream.on('data', function (event) {
   if (event) {
     let requestTweetId = event.id_str;
@@ -33,26 +34,32 @@ stream.on('data', function (event) {
         console.log("favorite to request tweet.");
       }
     });
+    
+    if (new RegExp('@tipnem tip @tipnem_faucet').test(userText)) {
+      // tipコマンドを検知した場合のみ残高を確定して処理を終了する。
+      ConfirmBalance();
+    } else {
+      faucetBalance().then(balance => {
+        if (balance < 1) {
+          client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+            if (!error) {
+              console.log('tweet Faucet empty');
+            }
+          });
+        } else {
+          VerifyUser(event, requestAt).then(result => {
+            if (!result) {
+              return false;
+            } else {
+              faucetXem(result[0], result[1]);
+            }
+          }).catch((error) => {
+            console.log(error);
+          });
+        }
+      });
+    }
 
-    faucetBalance().then(balance => {
-      if (balance < 1) {
-        client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-          if (!error) {
-            return false;
-          }
-        });
-      } else {
-        VerifyUser(event, requestAt).then(result => {
-          if (!result) {
-            return false;
-          } else {
-            faucetXem(result[0], result[1]);
-          }
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
-    });
   }
 });
 
@@ -101,26 +108,19 @@ function faucetBalance() {
  * 自分にtipが投げられた際に残高を確認し受取を確定する
  * 参考： https://namuyan.github.io/nem-tip-bot/index
  */
-var balanceStream = client.stream('statuses/filter', { track: '@tipnem tip @tipnem_faucet' });
-balanceStream.on('data', function (tweet) {
-  if (tweet) {
-    client.post('statuses/update', { status: '@tipnem balance' + ' ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-      if (!error) {
-        console.log('tweet @tipnem balance');
-        faucetBalance().then(balance => {
-          if (balance) {
-            client.post('statuses/update', { status: 'Faucetの残高は: ' + balance + ' xem です。 ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-              if (!error) {
-                console.log('tweet balance');
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-});
-
-balanceStream.on('error', function (error) {
-  console.log(error);
-});
+function ConfirmBalance() {
+  client.post('statuses/update', { status: '@tipnem balance' + ' ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+    if (!error) {
+      console.log('tweet @tipnem balance');
+      faucetBalance().then(balance => {
+        if (balance) {
+          client.post('statuses/update', { status: 'Faucetの残高は: ' + balance + ' xem です。 ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+            if (!error) {
+              console.log('tweet balance');
+            }
+          });
+        }
+      });
+    }
+  });
+};
