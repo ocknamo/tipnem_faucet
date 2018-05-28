@@ -16,7 +16,7 @@ const faucetXem = require('./routes/faucetxem')
  * number of tweets per second depends on topic popularity
  **/
 
-var stream = client.stream('statuses/filter', { track: 'Please give me NEM:XEM!' });
+var stream = client.stream('statuses/filter', { track: 'Please give me NEM:XEM!,NEM:XEMちょっとください' });
 stream.on('data', function (event) {
   if (event) {
     let requestTweetId = event.id_str;
