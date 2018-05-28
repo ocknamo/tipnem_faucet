@@ -80,7 +80,14 @@ function faucetBalance() {
         body += chunk;
       });
       res.on('end', (res) => {
-        console.log(body);
+        /** 接続がエラーの場合tipnemのAPIから
+         * "not found user info"もしくは"not found select name or not allowed"が返ってくるため
+         * 対応する処理を行う
+        */
+        if (new RegExp('not found').test(body)){
+          console.log("残高確認のリクエストが許可されているか確認してください:" + body);
+          return false;
+        }
         res = JSON.parse(body);
         balance = res["nem:xem"] / 1000000;
         resolve(balance);
