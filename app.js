@@ -17,7 +17,7 @@ const faucetXem = require('./routes/faucetxem')
  * filter message: En message OR Ja message OR tip message
  **/
 
-var stream = client.stream('statuses/filter', { track: 'Please give me NEM:XEM!,NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
+var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please give me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
 stream.on('data', function (event) {
   if (event) {
     let requestTweetId = event.id_str;
@@ -34,6 +34,8 @@ stream.on('data', function (event) {
         console.log("favorite to request tweet.");
       }
     });
+
+    // TODO 対象をフォローする
     
     if (new RegExp('@tipnem tip @tipnem_faucet').test(userText)) {
       // tipコマンドを検知した場合のみ残高を確定して処理を終了する。
