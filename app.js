@@ -16,7 +16,6 @@ const faucetXem = require('./routes/faucetxem')
  * number of tweets per second depends on topic popularity
  * filter message: En message OR Ja message OR tip message
  **/
-
 var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please give me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
 stream.on('data', function (event) {
   if (event) {
@@ -36,7 +35,7 @@ stream.on('data', function (event) {
         if (balance < 1) {
           client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
             if (!error) {
-              console.log('tweet Faucet empty');
+              console.log('tweet Faucet empty or stoping tipbot');
             }
           });
         } else {
@@ -52,7 +51,6 @@ stream.on('data', function (event) {
         }
       });
     }
-
   }
 });
 
