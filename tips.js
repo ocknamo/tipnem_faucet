@@ -120,7 +120,7 @@ const selectTips = function () {
   let tipsnumber = Math.floor(Math.random() * tips.length); // To contain tipsnumber in faucetTweet.
   let selectedtips = tips[tipsnumber];
 
-  let faucetTweet = selecteddescription + " Tips" + tipsnumber + ": " + selectedtips;
+  let faucetTweet = selecteddescription + " Tips" + tipsnumber + ": 「" + selectedtips + "」";
   return faucetTweet;
 };
 
