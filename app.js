@@ -16,7 +16,7 @@ const faucetXem = require('./routes/faucetxem')
  * number of tweets per second depends on topic popularity
  * filter message: En message OR Ja message OR tip message
  **/
-var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please give me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
+var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please tip me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
 stream.on('data', function (event) {
   if (event) {
     let requestTweetId = event.id_str;
@@ -122,3 +122,10 @@ function ConfirmBalance() {
     }
   });
 };
+
+// 定期実行ツイート
+const CronJob = require('cron').CronJob;
+//                    cron Sec Min Hour DayofMonth Month Dayofweek
+let job = new CronJob('00 00 * * * *', function() {
+  console.log('You will see this message every second');
+}, null, true, 'America/Los_Angeles');

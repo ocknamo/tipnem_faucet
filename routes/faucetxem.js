@@ -1,5 +1,6 @@
 'use strict';
 const Twitter = require('twitter');
+const Tips = require('../tips');
 
 const client = new Twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -18,17 +19,18 @@ const faucetXem = function (userScreenName, faucetCount) {
 
   return new Promise((resolve, reject) => {
     if (faucetCount === 0) {
+      let faucetdiscription = Tips.selectTips();
       /**
        * faucetXemのユニットテストを行う場合は以下のclient.postをコメントアウトする
        */
-      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription }, function (error, tweet, response) {
         if (!error) {
           console.info('Faucet to' + userScreenName + ': 1xem');
-          resolve('@tipnem tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
+          resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
         }
       });
 
-     resolve('@tipnem tip @' + userScreenName + ' 1 xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
+     resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
     } else {
       /**
        * 配布割合
@@ -49,17 +51,17 @@ const faucetXem = function (userScreenName, faucetCount) {
         faucetAmount = 1;
       }
       faucetAmount = Math.round(faucetAmount * 10)/10; // 浮動小数点数の精度により"0.8999999999999999"などの値が出力されるバグを防ぐため
+      let faucetdiscription = Tips.selectTips();
       /**
        * faucetXemのユニットテストを行う場合は以下のclient.postをコメントアウトする
        */
-      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription }, function (error, tweet, response) {
         if (!error) {
           console.info('Faucet to' + userScreenName + ':' + faucetAmount + 'xem');
-          resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用
+          resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
         }
       });
-
-      resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem どうぞ ' + Math.floor(Math.random() * 100000)); //公式にもテスト例がないため返り値で代用      
+      resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
     }
   });
 };

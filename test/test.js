@@ -7,7 +7,7 @@ var User = require('../models/user');
 User.sync();
 
 const VerifyUser = require('../routes/verifyuser');
-const faucetXem = require('../routes/faucetxem')
+const faucetXem = require('../routes/faucetxem');
 
 // Time: mm sec
 const OneHour = 1000 * 60 * 60;
@@ -200,6 +200,21 @@ describe('#VerifyUser()', () => {
         assert.equal(result, false);
       });
     });
+  });
+});
+
+const Tips = require('../tips');
+describe('#Tips()', () => {
+  it('Tipsからランダムにfaucet用文章を取得できる', () => {
+    let faucetdiscription = Tips.selectTips();
+    console.log(faucetdiscription);
+    assert.equal(faucetdiscription.length !== 0, true);
+  });
+
+  it('Tipsからランダムに定期ツイート用文章を取得できる', () => {
+    let regulartweet = Tips.selectRegularTweet();
+    console.log(regulartweet);
+    assert.equal(regulartweet.length !== 0, true);
   });
 });
 
