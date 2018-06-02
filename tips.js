@@ -93,27 +93,56 @@ const regulartweets = [
 ]
 
 /**
- * 
+ * Array of descriptions putted on follow of '@tipnem balance '.
+ * < 20 chars
+ * 攻撃を受けた場合に短時間に10程度の連続tweetで終了させるため種類は10種類以下とする
  */
-const selectTips = function() {
-// select description
-let selecteddescription = description[Math.floor(Math.random()*description.length)];
+const balanceDocList = [
+  '🚰',
+  'どれくらい???🚰',
+  'ちょっとかな🚰',
+  '🚰じゃー！',
+  'ぽたぽた……🚰',
+  'ぽたぽたぽた……🚰',
+  'じゃー🚰',
+  '水漏れ……🚰',
+  '貯まってますか？🚰',
+]
 
-// select tips
-let tipsnumber = Math.floor(Math.random()*tips.length); // To contain tipsnumber in faucetTweet.
-let selectedtips = tips[tipsnumber];
+/**
+ * FaucetTweetの文面をランダムに作成する
+ */
+const selectTips = function () {
+  // select description
+  let selecteddescription = description[Math.floor(Math.random() * description.length)];
 
-let faucetTweet = selecteddescription + " Tips" + tipsnumber + ": " + selectedtips;
-return faucetTweet;
+  // select tips
+  let tipsnumber = Math.floor(Math.random() * tips.length); // To contain tipsnumber in faucetTweet.
+  let selectedtips = tips[tipsnumber];
+
+  let faucetTweet = selecteddescription + " Tips" + tipsnumber + ": " + selectedtips;
+  return faucetTweet;
 };
 
-const selectRegularTweet = function() {
-// RegularTweet
-let selectedregulartweet = regulartweets[Math.floor(Math.random()*regulartweets.length)];
-return selectedregulartweet;
+/**
+ * 定期実行Tweetの文面をランダムに作成する
+ */
+const selectRegularTweet = function () {
+  // RegularTweet
+  let selectedregulartweet = regulartweets[Math.floor(Math.random() * regulartweets.length)];
+  return selectedregulartweet;
+};
+
+/**
+ * 残高確認Tweetの文面をランダムに作成する
+ */
+const selectBalanceDoc = function () {
+  let balanceDoc = balanceDocList[Math.floor(Math.random() * balanceDocList.length)];
+  return balanceDoc;
 };
 
 module.exports = {
   selectTips: selectTips,
   selectRegularTweet: selectRegularTweet,
+  selectBalanceDoc: selectBalanceDoc,
 };
