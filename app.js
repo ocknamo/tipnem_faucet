@@ -29,7 +29,7 @@ function main() {
       let date = new Date();
       console.log(date + ' Reconnecting... Interval Time = ' + timeintervalsec + " sec")
 
-      var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please tip me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
+      var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please give me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
       stream.on('data', function (event) {
         if (event) {
           let requestTweetId = event.id_str;
