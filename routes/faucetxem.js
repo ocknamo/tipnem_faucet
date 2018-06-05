@@ -25,7 +25,7 @@ const faucetXem = function (userScreenName, faucetCount) {
        */
       client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription }, function (error, tweet, response) {
         if (!error) {
-          console.info('Faucet to' + userScreenName + ': 1xem');
+          console.info('Faucet to ' + userScreenName + ': 1xem');
           resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
         }
       });

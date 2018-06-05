@@ -17,47 +17,72 @@ const Tips = require('./tips');
  * number of tweets per second depends on topic popularity
  * filter message: En message OR Ja message OR tip message
  **/
-var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please tip me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
-stream.on('data', function (event) {
-  if (event) {
-    let requestTweetId = event.id_str;
-    let userId = event.user.id_str;
-    let userScreenName = event.user.screen_name;
-    let userText = event.text;
-    let requestAt = Date.now();
+var timeintervalsec = 1;
+var exponent = 0;
 
-    console.info(userScreenName + userId + 'から' + requestAt + 'にリクエストを受け取りました。:' + userText)
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    if (new RegExp('@tipnem tip @tipnem_faucet').test(userText)) {
-      // tipコマンドを検知した場合のみ残高を確定して処理を終了する。
-      ConfirmBalance();
-    } else {
-      faucetBalance().then(balance => {
-        if (balance < 1) {
-          client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
-            if (!error) {
-              console.log('tweet Faucet empty or stoping tipbot');
-            }
-          });
-        } else {
-          VerifyUser(event, requestAt).then(result => {
-            if (!result) {
-              return false;
-            } else {
-              faucetXem(result[0], result[1]);
-            }
-          }).catch((error) => {
-            console.log(error);
-          });
+function main() {
+  timeintervalsec = Math.pow(2, exponent);
+  wait(timeintervalsec * 1000) // インターバルを2^0SEC,2^1SEC,2^2SEC...としてmain taskを実行する実装
+    .then(() => {
+      let date = new Date();
+      console.log(date + ' Reconnecting... Interval Time = ' + timeintervalsec + " sec")
+
+      var stream = client.stream('statuses/filter', { track: '@tipnem_faucet Please tip me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet' });
+      stream.on('data', function (event) {
+        if (event) {
+          let requestTweetId = event.id_str;
+          let userId = event.user.id_str;
+          let userScreenName = event.user.screen_name;
+          let userText = event.text;
+          let requestAt = Date.now();
+
+          console.info(userScreenName + userId + 'から' + requestAt + 'にリクエストを受け取りました。:' + userText)
+
+          if (new RegExp('@tipnem tip @tipnem_faucet').test(userText)) {
+            // tipコマンドを検知した場合のみ残高を確定して処理を終了する。
+            ConfirmBalance();
+          } else {
+            faucetBalance().then(balance => {
+              if (balance < 1) {
+                client.post('statuses/update', { status: '@' + userScreenName + ' Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  ' + Math.floor(Math.random() * 100000) }, function (error, tweet, response) {
+                  if (!error) {
+                    console.log('tweet Faucet empty or stoping tipbot');
+                  }
+                });
+              } else {
+                VerifyUser(event, requestAt).then(result => {
+                  if (!result) {
+                    return false;
+                  } else {
+                    faucetXem(result[0], result[1]);
+                  }
+                }).catch((error) => {
+                  console.log(error);
+                });
+              }
+            });
+          }
         }
       });
-    }
-  }
-});
-
-stream.on('error', function (error) {
-  throw error;
-});
+      stream.on('error', function (error) {
+        if (exponent > 12) { // exponentが12以上つまり 2^12=4096 > 3600sec=1hourの場合処理を終了する
+          console.log('再接続間隔が1時間以上となったため終了');
+          throw error;
+        } else if (error.message == 'Status Code: 420') { // 420の場合はインターバルを増やして再接続する
+          stream.destroy(); //多重起動を防止するため
+          exponent++;
+          main();
+        } else {
+          console.log('420以外のエラーによる終了');
+          throw error;
+        }
+      });
+    })
+    .catch();
+};
+main();
 
 /**
  * @return {number} xem balance
@@ -111,7 +136,7 @@ function ConfirmBalance() {
   let balancedoc = Tips.selectBalanceDoc();
   client.post('statuses/update', { status: '@tipnem balance' + ' ' + balancedoc }, function (error, tweet, response) {
     if (!error) {
-      console.log('tweet @tipnem balance '+  balancedoc);
+      console.log('tweet @tipnem balance ' + balancedoc);
       faucetBalance().then(balance => {
         if (balance) {
           // 同じ残高で何度もtweetしないようにあえて文面は一種類に限定する。
