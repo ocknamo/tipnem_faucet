@@ -71,6 +71,7 @@ function main() {
           console.log('再接続間隔が1時間以上となったため終了');
           throw error;
         } else if (error.message == 'Status Code: 420') { // 420の場合はインターバルを増やして再接続する
+          console.log('420のエラーによる再接続');
           stream.destroy(); //多重起動を防止するため
           exponent++;
           main();
