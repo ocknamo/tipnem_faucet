@@ -7,6 +7,7 @@
     "log_date_format"  :"YYYY-MM-DD HH:mm Z",
     "out_file"  :"tipnem_faucet",
     "min_uptime"  :"5m",
-    "max_restarts"  :"10"
+    "max_restarts"  :"10",
+    "restart_delay"  :"1200000"
   }]
 }
