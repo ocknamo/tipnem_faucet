@@ -33,18 +33,18 @@ const faucetXem = function (userScreenName, faucetCount) {
     } else {
       /**
        * 配布割合
-       *          50% <= 0.5xem
-       * 0.5xem < 30% <= 0.7xem
-       * 0.7xem < 15% <= 0.9xem
-       * 1.0xem = 5%
+       *          80% <= 0.5xem
+       * 0.5xem < 10% <= 0.7xem
+       * 0.7xem < 8% <= 0.9xem
+       * 1.0xem = 2%
        */
       let faucetAmount = 0;
       let parcentageParams = Math.floor(Math.random() * 100);
-      if (parcentageParams <= 50) {
+      if (parcentageParams <= 80) {
         faucetAmount = Math.ceil(Math.random() * 5) / 10; //0.1から0.5を0.1刻みでランダムに出力する
-      } else if (parcentageParams <= 80) {
+      } else if (parcentageParams <= 90) {
         faucetAmount = Math.ceil(Math.random() * 2) / 10 + 0.5; //0.6か0.7をランダムに出力する
-      } else if (parcentageParams <= 95) {
+      } else if (parcentageParams <= 98) {
         faucetAmount = Math.ceil(Math.random() * 2) / 10 + 0.7; //0.8か0.9をランダムに出力する
       } else if (parcentageParams <= 100) {
         faucetAmount = 1;
