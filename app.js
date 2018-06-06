@@ -23,7 +23,7 @@ var exponent = 0;
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function main() {
-  timeintervalsec = Math.pow(2, exponent);
+  timeintervalsec = 60 * Math.pow(2, exponent);
   wait(timeintervalsec * 1000) // インターバルを2^0SEC,2^1SEC,2^2SEC...としてmain taskを実行する実装
     .then(() => {
       let date = new Date();
@@ -67,7 +67,7 @@ function main() {
         }
       });
       stream.on('error', function (error) {
-        if (exponent > 12) { // exponentが12以上つまり 2^12=4096 > 3600sec=1hourの場合処理を終了する
+        if (exponent > 6) { // exponentが6以上つまり 2^12=3840 > 3600sec=1hourの場合処理を終了する
           console.log('再接続間隔が1時間以上となったため終了');
           throw error;
         } else if (error.message == 'Status Code: 420') { // 420の場合はインターバルを増やして再接続する

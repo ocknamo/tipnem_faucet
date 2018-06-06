@@ -16,7 +16,6 @@ const client = new Twitter({
  * @return {String} (for test) 
  */
 const faucetXem = function (userScreenName, faucetCount) {
-
   return new Promise((resolve, reject) => {
     if (faucetCount === 0) {
       let faucetdiscription = Tips.selectTips();
