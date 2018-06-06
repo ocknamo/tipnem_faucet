@@ -27,7 +27,7 @@ const VerifyUser = function (tweetJSON, requestAt) {
       }
     }).then(pastRequest => {
 
-      if (tweetJSON.user.friends_count < 50 || tweetJSON.user.statuses_count < 100) { // フォロワー数が50以上かつツイート数が100以上か
+      if (tweetJSON.user.followers_count < 50 || tweetJSON.user.statuses_count < 100) { // フォロワー数が50以上かつツイート数が100以上か
         resolve(false);
         console.info('フォロワー数が50以下もしくはツイート数が100以下のため検証修了');
       } else if (pastRequest) {
