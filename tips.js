@@ -81,7 +81,7 @@ const description = [
 const regulartweets = [
   '投げ銭ツイートに含まれるTips(ヒント)はtwitter社さんから「似たようなツイートをしまくるのはスパムと判定するからやめて」と言われたので作りました。Bot作る人は気をつけるんじゃー！',
   'このFaucetのプール金は有志NEMber様の寄付で成り立っています。運営は1XEMも抜いていません。もしよければFaucetに寄付をお願いします〜',
-  '「@tipnem_faucet Please tip me NEM:XEM!」もしくは「@tipnem_faucet NEM:XEMちょっとください」とつぶやくとちょっとだけXEMがもらえたりもらえなかったり……🚰？',
+  '「@tipnem_faucet Please give me NEM:XEM!」もしくは「@tipnem_faucet NEM:XEMちょっとください」とつぶやくとちょっとだけXEMがもらえたりもらえなかったり……🚰？',
   'tipnemの使い方はこちらを読んでください！ https://namuyan.github.io/nem-tip-bot/index ',
   'tipnem_faucetはMITライセンスで公開してますじゃー🚰 https://github.com/ocknamo/tipnem_faucet',
   'tipnem_faucetの説明じゃー🚰　→　https://github.com/ocknamo/tipnem_faucet ',
