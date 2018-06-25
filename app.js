@@ -87,13 +87,13 @@ main();
 
 /**
  * @return {number} xem balance
- * // GET　mainnet: http://tipnem.tk:5745/user/balance/tipnem_faucet
- * // GET　testnet: http://tipnem.tk:5746/user/balance/tipfaucet_test
+ * // GET　mainnet: https://tipnem.tk:6745/user/balance/tipnem_faucet
+ * // GET　testnet: https://tipnem.tk:6746/user/balance/tipfaucet_test
  */
 function faucetBalance() {
   let balance = 0;
   let http = require('http');
-  const URL = 'http://tipnem.tk:5745/user/balance/tipnem_faucet';
+  const URL = 'https://tipnem.tk:6745/user/balance/tipnem_faucet';
 
   return new Promise((resolve, reject) => {
     var req = http.get(URL, (res) => {
