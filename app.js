@@ -92,11 +92,11 @@ main();
  */
 function faucetBalance() {
   let balance = 0;
-  let http = require('http');
+  let https = require('https');
   const URL = 'https://tipnem.tk:6745/user/balance/tipnem_faucet';
 
   return new Promise((resolve, reject) => {
-    var req = http.get(URL, (res) => {
+    var req = https.get(URL, (res) => {
       let body = '';
       res.setEncoding('utf8');
 
