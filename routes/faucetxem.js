@@ -30,7 +30,7 @@ const faucetXem = function (userScreenName, faucetCount) {
       });
 
      resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
-    } else if (0 < faucetCount || faucetCount < 10) {
+    } else if (0 < faucetCount && faucetCount < 10) {
       /**
        * 配布割合
        *          80% <= 0.5xem
