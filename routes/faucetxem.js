@@ -30,7 +30,7 @@ const faucetXem = function (userScreenName, faucetCount) {
       });
 
      resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
-    } else {
+    } else if (0 < faucetCount || faucetCount < 10) {
       /**
        * 配布割合
        *          80% <= 0.5xem
@@ -61,6 +61,24 @@ const faucetXem = function (userScreenName, faucetCount) {
         }
       });
       resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
+    } else {
+      /**
+       * 10回以上リクエストを行っていたユーザーの場合の処理
+       * 0.1-0.3 をランダムで配布し1/4の割合でtip失敗する
+       */
+      let faucetAmount = Math.floor(Math.random() * 4) / 10;
+      console.info('10回以上リクエストしたユーザー用処理を実行')
+      if (faucetAmount == 0) {
+        console.info('tip失敗。')
+        return false;
+      };
+      let faucetdiscription = Tips.selectTips();
+      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription }, function (error, tweet, response) {
+        if (!error) {
+          console.info('Faucet to' + userScreenName + ':' + faucetAmount + 'xem');
+          resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
+        }
+      });
     }
   });
 };
