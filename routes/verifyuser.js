@@ -52,7 +52,7 @@ const VerifyUser = function (tweetJSON, requestAt) {
 
 /**
  * User Registration
- * リクエストが検証を通過したしたユーザーをデータベースに記録・更新する
+ * リクエストが検証を通過したユーザーをデータベースに記録・更新する
  * @param {JSON} tweetJSON 
  * @param {Number} requestAt 
  * @param {Number} lastFaucetCount 
