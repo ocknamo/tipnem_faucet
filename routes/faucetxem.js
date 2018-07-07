@@ -1,6 +1,6 @@
-'use strict';
-const Twitter = require('twitter');
-const Tips = require('../tips');
+"use strict";
+const Twitter = require("twitter");
+const Tips = require("../tips");
 
 const client = new Twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -11,25 +11,17 @@ const client = new Twitter({
 
 /**
  * Detect faucet amount and tip.
- * @param {String} userScreenName 
+ * @param {String} userScreenName
  * @param {Number} faucetCount
- * @return {String} (for test) 
+ * @return {String} (for test)
  */
-const faucetXem = function (userScreenName, faucetCount) {
+const faucetXem = function(userScreenName, faucetCount) {
   return new Promise((resolve, reject) => {
     if (faucetCount === 0) {
-      let faucetdiscription = Tips.selectTips();
       /**
-       * faucetXemのユニットテストを行う場合は以下のclient.postをコメントアウトする
+       * 初回のユーザーは1xem配布
        */
-      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription }, function (error, tweet, response) {
-        if (!error) {
-          console.info('Faucet to ' + userScreenName + ': 1xem');
-          resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
-        }
-      });
-
-     resolve('@tipnem tip @' + userScreenName + ' 1 xem ' + faucetdiscription); //テスト用
+      post(userScreenName, 1);
     } else if (0 < faucetCount && faucetCount < 10) {
       /**
        * 配布割合
@@ -49,38 +41,64 @@ const faucetXem = function (userScreenName, faucetCount) {
       } else if (parcentageParams <= 100) {
         faucetAmount = 1;
       }
-      faucetAmount = Math.round(faucetAmount * 10)/10; // 浮動小数点数の精度により"0.8999999999999999"などの値が出力されるバグを防ぐため
+      faucetAmount = Math.round(faucetAmount * 10) / 10; // 浮動小数点数の精度により"0.8999999999999999"などの値が出力されるバグを防ぐため
       let faucetdiscription = Tips.selectTips();
-      /**
-       * faucetXemのユニットテストを行う場合は以下のclient.postをコメントアウトする
-       */
-      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription }, function (error, tweet, response) {
-        if (!error) {
-          console.info('Faucet to' + userScreenName + ':' + faucetAmount + 'xem');
-          resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
-        }
-      });
-      resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
-    } else {
+      post(userScreenName, faucetAmount);
+    } else if ( 10 <= faucetCount && faucetCount < 20) {
       /**
        * 10回以上リクエストを行っていたユーザーの場合の処理
        * 0.1-0.3 をランダムで配布し1/4の割合でtip失敗する
        */
+      console.info("10回以上リクエストしたユーザー用処理を実行");
       let faucetAmount = Math.floor(Math.random() * 4) / 10;
-      console.info('10回以上リクエストしたユーザー用処理を実行')
       if (faucetAmount == 0) {
-        console.info('tip失敗。')
+        console.info("tip失敗。");
         return false;
-      };
-      let faucetdiscription = Tips.selectTips();
-      client.post('statuses/update', { status: '@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription }, function (error, tweet, response) {
-        if (!error) {
-          console.info('Faucet to' + userScreenName + ':' + faucetAmount + 'xem');
-          resolve('@tipnem tip @' + userScreenName + ' ' + faucetAmount + ' xem ' + faucetdiscription); //テスト用
-        }
-      });
+      }
+      post(userScreenName, faucetAmount);
+    } else {
+      /**
+       * 20回以上リクエストを行っていたユーザーの場合の処理
+       * 1/5の確率で0.1xemを配布し、4/5の確率で失敗する
+       */
+      console.info("20回以上リクエストしたユーザー用処理を実行");
+      let faucetAmount = Math.floor(Math.random() * 5) / 10;
+      if (faucetAmount == 0.1) {
+        post(userScreenName, faucetAmount);
+      }
+      console.info("tip失敗。");
+      return false;
     }
   });
 };
+
+function post(userScreenName, faucetAmount) {
+  let faucetdiscription = Tips.selectTips();
+  client.post(
+    "statuses/update",
+    {
+      status:
+        "@tipnem tip @" +
+        userScreenName +
+        " " +
+        faucetAmount +
+        " xem " +
+        faucetdiscription
+    },
+    function(error, tweet, response) {
+      if (!error) {
+        console.info("Faucet to" + userScreenName + ":" + faucetAmount + "xem");
+        resolve(
+          "@tipnem tip @" +
+            userScreenName +
+            " " +
+            faucetAmount +
+            " xem " +
+            faucetdiscription
+        ); //テスト用
+      }
+    }
+  );
+}
 
 module.exports = faucetXem;
