@@ -21,7 +21,7 @@ var timeintervalsec = 1;
 var exponent = 0;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-let faucet_balance = 0;
+var faucet_balance = 0;
 
 function main() {
   timeintervalsec = 60 * Math.pow(2, exponent);
@@ -93,7 +93,7 @@ function main() {
                 }
               });
             } else {
-              faucet_balance--;
+              faucet_balance = faucet_balance-1;
               VerifyUser(event, requestAt)
               .then(result => {
                 if (!result) {
