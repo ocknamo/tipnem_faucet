@@ -88,14 +88,6 @@ function post(userScreenName, faucetAmount) {
     function(error, tweet, response) {
       if (!error) {
         console.info("Faucet to" + userScreenName + ":" + faucetAmount + "xem");
-        resolve(
-          "@tipnem tip @" +
-            userScreenName +
-            " " +
-            faucetAmount +
-            " xem " +
-            faucetdiscription
-        ); //テスト用
       }
     }
   );
