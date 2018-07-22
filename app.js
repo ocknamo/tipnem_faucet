@@ -83,6 +83,7 @@ function main() {
                       if (!result) {
                         return false;
                       } else {
+                        console.log("Use faucetBalance");
                         // result[userId, faucetCount]
                         faucetXem(result[0], result[1]);
                       }
@@ -99,6 +100,7 @@ function main() {
                 if (!result) {
                   return false;
                 } else {
+                  console.log("Don't use faucetBalance");
                   // result[userId, faucetCount]
                   faucetXem(result[0], result[1]);
                 }
