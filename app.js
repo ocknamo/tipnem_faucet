@@ -86,6 +86,7 @@ function main() {
                         console.log("Use faucetBalance");
                         // result[userId, faucetCount]
                         faucetXem(result[0], result[1]);
+                        return false;
                       }
                     })
                     .catch(error => {
@@ -103,6 +104,7 @@ function main() {
                   console.log("Don't use faucetBalance");
                   // result[userId, faucetCount]
                   faucetXem(result[0], result[1]);
+                  return false;
                 }
               })
               .catch(error => {
@@ -228,6 +230,9 @@ new CronJob(
         console.info("tweet:" + regulartweet);
       }
     });
+    // mainを定期的に再起動する。
+    stream.destroy(); //多重起動を防止するため
+    main();
   },
   null,
   true,
