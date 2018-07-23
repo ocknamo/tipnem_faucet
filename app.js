@@ -231,7 +231,6 @@ new CronJob(
       }
     });
     // mainを定期的に再起動する。
-    stream.destroy(); //多重起動を防止するため
     main();
   },
   null,
