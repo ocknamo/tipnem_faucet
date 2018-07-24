@@ -231,8 +231,8 @@ new CronJob(
       }
     });
     // 初期化してmainを定期的に再起動する。
-    exponent = 0;
-    main();
+    //exponent = 0;
+    //main();
   },
   null,
   true,
