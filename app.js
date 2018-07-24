@@ -68,7 +68,7 @@ function main() {
                       status:
                         "@" +
                         userScreenName +
-                        " Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotが停止しています……(T_T)/  " +
+                        " Sorry. Faucet is empty or stoping tipbot. 残念ですがfaucetの残高が足りないかtipbotとの連携が失敗しています……(T_T)/ しばらく待ってね。 " +
                         Math.floor(Math.random() * 100000)
                     },
                     function(error, tweet, response) {
