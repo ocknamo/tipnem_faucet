@@ -21,7 +21,7 @@ var timeintervalsec = 1;
 var exponent = 0;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-var faucet_balance = 0;
+var faucet_balance = 50;
 
 function main() {
   timeintervalsec = 60 * Math.pow(2, exponent);
@@ -196,6 +196,7 @@ function ConfirmBalance() {
       if (!error) {
         console.log("tweet @tipnem balance " + balancedoc);
         faucetBalance().then(balance => {
+          faucet_balance = balance;
           if (balance) {
             // 同じ残高で何度もtweetしないようにあえて文面は一種類に限定する。
             client.post(
