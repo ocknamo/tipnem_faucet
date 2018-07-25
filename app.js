@@ -215,6 +215,7 @@ function ConfirmBalance() {
   );
 }
 
+/**
 // 定期実行ツイート
 const CronJob = require("cron").CronJob;
 //          Sec Min Hour DayofMonth Month Dayofweek
@@ -239,3 +240,4 @@ new CronJob(
   true,
   "Asia/Tokyo"
 );
+*/
