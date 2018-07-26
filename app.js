@@ -87,7 +87,7 @@ function main() {
                         // result[userId, faucetCount]
                         faucetXem(result[0], result[1]);
                         stream.destroy(); //多重起動を防止するため
-                        exponent = 0;
+                        exponent = -3;
                         main(); // 初期化して再起動
                         return false;
                       }
@@ -108,7 +108,7 @@ function main() {
                   // result[userId, faucetCount]
                   faucetXem(result[0], result[1]);
                   stream.destroy(); //多重起動を防止するため
-                  exponent = 0;
+                  exponent = -3;
                   main(); // 初期化して再起動
                   return false;
                 }
