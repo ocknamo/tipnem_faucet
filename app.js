@@ -86,6 +86,9 @@ function main() {
                         console.log("Use faucetBalance");
                         // result[userId, faucetCount]
                         faucetXem(result[0], result[1]);
+                        stream.destroy(); //多重起動を防止するため
+                        exponent = 0;
+                        main(); // 初期化して再起動
                         return false;
                       }
                     })
@@ -104,6 +107,9 @@ function main() {
                   console.log("Don't use faucetBalance");
                   // result[userId, faucetCount]
                   faucetXem(result[0], result[1]);
+                  stream.destroy(); //多重起動を防止するため
+                  exponent = 0;
+                  main(); // 初期化して再起動
                   return false;
                 }
               })
@@ -215,7 +221,7 @@ function ConfirmBalance() {
   );
 }
 
-/**
+
 // 定期実行ツイート
 const CronJob = require("cron").CronJob;
 //          Sec Min Hour DayofMonth Month Dayofweek
@@ -240,4 +246,3 @@ new CronJob(
   true,
   "Asia/Tokyo"
 );
-*/
