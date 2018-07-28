@@ -21,9 +21,9 @@ var timeintervalsec = 1;
 var exponent = 0;
 
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-var faucet_balance = 50;
 
 function main() {
+  let faucet_balance = 50;
   timeintervalsec = 60 * Math.pow(2, exponent);
   wait(timeintervalsec * 1000) // インターバルを2^0SEC,2^1SEC,2^2SEC...としてmain taskを実行する実装
     .then(() => {
