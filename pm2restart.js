@@ -1,6 +1,6 @@
 var pm2 = require('pm2');
 var cronJob = require('cron').CronJob;
-var cronTime = "0 0 * * * *"; // 毎日朝6時に実行
+var cronTime = "0 0 6 * * *"; // 毎日朝6時に実行
 
 //プロセスの状態を確認して終了させる
 function showAndDone(){
