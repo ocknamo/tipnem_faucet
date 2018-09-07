@@ -18,8 +18,19 @@ Faucetとは蛇口を意味することばですが、暗号通貨の配布方�
 - 初回1xem,それ以降0〜1xemでランダム若しくは任意の確率で配布する。
   
 ## How to install
-追記予定
-  
+
+```bash
+npm install
+
+pm2 start ecosystem.config.json
+```
+
+restart job
+
+```bash
+pm2 start pm2restart.js
+```
+
 ## 参考
 [tipnem](https://namuyan.github.io/nem-tip-bot/index)
   
