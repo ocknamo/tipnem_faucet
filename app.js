@@ -34,7 +34,7 @@ function main() {
 
       var stream = client.stream("statuses/filter", {
         track:
-          "@tipnem_faucet Please give me NEM:XEM!,@tipnem_faucet NEM:XEMちょっとください,@tipnem tip @tipnem_faucet"
+          "@tipnem_faucet Please tip me NEM!,@tipnem_faucet NEMちょっとください!,@tipnem tip @tipnem_faucet"
       });
       stream.on("data", function(event) {
         if (event) {
