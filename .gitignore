@@ -1,3 +1,4 @@
 node_modules/
 *~
-./tipnem_faucet
+tipnem_faucet
+*.log
